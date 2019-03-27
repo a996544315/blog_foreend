@@ -76,13 +76,6 @@ export default {
     height: 100%;
     .newBlog {
         min-height: 43.75rem;
-        .title {
-            margin-bottom: 4.75rem;
-            p {
-                padding-top: 2.8125rem;
-                width: 13rem;
-            }
-        }
         .posts {
             margin-top:1rem;
             .flex {
