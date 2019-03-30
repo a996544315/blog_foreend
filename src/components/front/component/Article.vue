@@ -55,7 +55,8 @@ export default {
             article: {},
             comments: [],
             showCancle: false,
-            id: ''
+            id: '',
+            toReplyId: ''
         }
     },
     created () {

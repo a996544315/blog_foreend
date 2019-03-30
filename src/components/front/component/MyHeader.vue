@@ -14,13 +14,9 @@
                 </ul>
             </nav>
             <div>
-                <a class="iconfont icon-github" href="https://github.com/a996544315"></a>
+                <a class="iconfont icon-github" target="view_window" href="https://github.com/a996544315"></a>
             </div>
         </div>
-        <!--<div class="container">
-            <img src="../../../../static/sunset.jpg" alt="bgimage" class="bgImage">
-            <div :class="headline.animation" id="title">{{headline.content}}</div>
-        </div>-->
     </div>
 </template>
 
@@ -58,7 +54,6 @@ export default {
 
 <style lang="scss" rel="stylesheet/scss" scoped>
 #nav {
-  position: relative;
   .flexDiv {
     display: flex;
     justify-content: space-between;
