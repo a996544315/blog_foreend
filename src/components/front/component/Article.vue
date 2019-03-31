@@ -18,7 +18,7 @@
             </p>
             <p v-show="showCancle" class="last_comment">{{ toReplyCommit }}</p>
             <div class="comment_content">
-                <textarea ref="commentInput" autofocus="autofocus" class="content_input" @keyup.enter="submitComment()" placeholder="......" v-model="reply.content"/>
+                <textarea ref="commentInput" class="content_input" @keyup.enter="submitComment()" placeholder="......" v-model="reply.content"/>
             </div>
             <p class="comment_user_info">
                 昵称&emsp;<input class="tag_info" @keyup.enter="submitComment()" v-model="reply.user"/>&emsp;&emsp;

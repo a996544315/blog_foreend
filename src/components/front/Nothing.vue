@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </section>
-            <div class="more_div"><p  id="more" @click="more()">---M O R E---</p></div>
+            <!-- <div class="more_div"><p  id="more" @click="more()">---M O R E---</p></div> -->
         </div>
     </div>
 </template>
