@@ -10,7 +10,7 @@
                     <router-link to="/nothing" tag="li">NOTHING</router-link>
                     <router-link to="/notpoem" tag="li">NOTPOEM</router-link>
                     <router-link to="/friend" tag="li">FRIENDS</router-link>
-                    <router-link to="/about" tag="li">ABOUT</router-link>
+                    <!-- <router-link to="/about" tag="li">ABOUTME</router-link> -->
                 </ul>
             </nav>
             <div>

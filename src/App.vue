@@ -14,6 +14,7 @@ import {mapState}   from 'vuex'
 export default {
     mounted () {
         document.addEventListener('visibilitychange', this.changeTitle, false)
+        document.querySelector('body').setAttribute('style', 'overflow-y: scroll')
     },
     components: {
         DialogBox
@@ -34,12 +35,16 @@ export default {
 </script>
 
 <style>
+    
     #app {
         margin: 0;
         padding: 0;
         overflow: hidden;
         min-height: 100%;
         width: 100%;
+    }
+    #app::-webkit-scrollbar {
+	    width: 0px;
     }
     @media screen and (max-width: 440px) {
         .fire {

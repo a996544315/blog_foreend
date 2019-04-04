@@ -6,7 +6,7 @@ const index = resolve => require(['@/components/front/index'], resolve)
 const Nothing = resolve => require(['@/components/front/Nothing'], resolve)
 const Article = resolve => require(['@/components/front/component/Article'], resolve)
 const NotPoem = resolve => require(['@/components/front/NotPoem'], resolve)
-const Poem = resolve => require(['@/components/front/component/Poem'], resolve)
+const Friend = resolve => require(['@/components/front/Friend'], resolve)
 // const Articles = resolve => require(['@/components/front/Articles'], resolve)
 // const contact = resolve => require(['@/components/front/contact'], resolve)
 // const login = resolve => require(['@/components/back/login'], resolve)
@@ -41,7 +41,7 @@ const router = new Router({
                 { path: 'nothing', name: 'nothing', component: Nothing, meta: { title: 'HELLO?' } },
                 { path: 'article', name: 'article', component: Article, meta: { title: 'HELLO?' } },
                 { path: 'notpoem', name: 'notpoem', component: NotPoem, meta: { title: 'HELLO?' } },
-                { path: 'poem', name: 'poem', component: Poem, meta: { title: 'HELLO?' } }
+                { path: 'friend', name: 'friend', component: Friend, meta: { title: 'HELLO?' } }
             ]
         },
         {

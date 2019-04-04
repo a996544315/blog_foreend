@@ -37,12 +37,21 @@ export default {
 
 <style lang="scss" rel="stylesheet/scss" scoped>
 @import '../../assets/css/icon.scss';
+
 #wrapper {
     widows: 100%;
     height: 100%;
     margin: 0 auto;
 }
 .content{
+    a,p{
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
     width: 100%;
     height: 100%;
     margin-bottom: 6rem;
