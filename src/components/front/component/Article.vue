@@ -32,6 +32,7 @@
                     <a class="comment_date">{{ comment.createDate | to_date }}</a>&emsp;
                     <a class="comment_user">{{ comment.user }} : </a>&emsp;&emsp;
                     <button @click="replyClick(comment)">回复</button>
+                    <button v-show="$store.state.isAdmin" @click="deleteComment(comment.id)">删除</button>
                 </p>
                 <span class="reply_target" v-show="comment.targetType===1">{{ getTarget(comment.targetId) }}</span>
                 <p class="comment_list_content">{{ comment.content }}</p>
@@ -127,6 +128,17 @@ export default {
             }).catch(e => {
                 alert(e)
                 console.log(e)
+            })
+        },
+        deleteComment: function (commentId) {
+            this.$http({
+                url: '/api/comment/' + commentId,
+                method: 'delete'
+            }).then(response => {
+                if (response.data.success === false) {
+                    alert('删除失败')
+                }
+                this.getComments(this.id)
             })
         },
         getTarget: function (commentId) {
@@ -239,7 +251,7 @@ export default {
                 border-radius: 0.2rem;
             }
             .comment_list_content{
-                margin: 0.7rem 0 0 0 
+                margin: 0.7rem 0 0 0 line-height: 2.5rem;
             }
         }
     }

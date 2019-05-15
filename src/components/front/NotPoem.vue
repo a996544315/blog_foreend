@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div>
+        <div v-show="!isEditing">
             <section class="newPoem">
                 <div class="flex">
                     <div class="box_wrapper">
@@ -11,7 +11,13 @@
                             </br>
                             <p class="content">{{poem.content}}<br/></p>
                             </br>
-                            <img class='commentIcon' src="/static/comment.png" @click="showComment = false;getComment(poem)"></img>
+                            <button @click="showComment = false;getComment(poem)">REPLY</button>
+                            <!-- <img class='commentIcon' src="/static/comment.png" @click="showComment = false;getComment(poem)"></img> -->
+                            <br>
+                            <button v-if="$store.state.isAdmin" @click="editingTarget.id=poem.id;editingTarget.title=poem.title;editingTarget.content=poem.content;isEditing=true">EDIT</button>
+                            <button v-if="$store.state.isAdmin" @click="editingTarget.id=null;editingTarget.title=null;editingTarget.content=null;isEditing=true">ADD</button>
+                            <br>
+                            <button v-if="$store.state.isAdmin" @click="isEditing=true">DELETE</button>
                         </div>
                     </div>
                 </div>
@@ -32,18 +38,18 @@
                         </div>
                         <p class="comment_user_info">
                             昵称&emsp;<input class="tag_info" @keyup.enter="submitComment()" v-model="reply.user"/>&emsp;&emsp;
-                            邮箱&emsp;<input class="tag_info" @keyup.enter="submitComment()" v-model="reply.email"/>&emsp;&emsp;
-                            <button class="submit" @click="submitComment()">提交</button>
+                            邮箱&emsp;<input class="titleag_info" @keyup.enter="submitComment()" v-model="reply.email"/>&emsp;&emsp;
+                            <button class="submit" @titlelick="submitComment()">提交</button>
                         </p>
                     </div>
                     <div class="comment_list">
-                        <div class="poem_comment" v-for="(comment, index) in comments">
+                        <div class="poem_comment" v-titleor="(comment, index) in comments">
                             <p>
                                 <a class="comment_date">{{ comment.createDate | to_date }}</a>&emsp;
                                 <a class="comment_user">{{ comment.user }} : </a>&emsp;&emsp;
                                 <button @click="replyClick(comment)">回复</button>
                             </p>
-                            <span class="reply_target" v-show="comment.targetType===1">{{ getTarget(comment.targetId) }}</span>
+                            <span class="reply_target" v-show="editingTargetcomment.targetType===1">{{ getTarget(comment.targetId) }}</span>
                             <p class="comment_list_content">{{ comment.content }}</p>
                         </div>
                     </div>
@@ -53,12 +59,34 @@
                 </div>
             </div>
         </div>
+
+        <div class="fore_back1" v-if="isEditing" >
+            <div class="edit_content">
+                <div style="">
+                    <input v-model="editingTarget.title"/>
+                </div>
+                <div>
+                    <textarea v-model="editingTarget.content"/>
+                </div>
+                <div>
+                    <button @click="submitPoem()">SUBMIT</button>
+                    <button @click="editingTarget.title=undefined;editingTarget.content=undefined">CLEAR</button>
+                    <button @click="isEditing=false;">CANCEL</button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
 export default {
     data () {
         return {
+            isEditing: false,
+            editingTarget: {
+                id: undefined,
+                title: undefined,
+                content: undefined
+            },
             poems: [],
             toDay: new Date(),
             numPerPage: 10,
@@ -82,10 +110,47 @@ export default {
         this.getPoems()
     },
     methods: {
+        submitPoem: function () {
+            if (this.editingTarget.id === null || this.editingTarget.id === undefined || this.editingTarget.id === '') {
+                this.$http({
+                    url: '/api/poem/',
+                    method: 'post',
+                    params: {
+                        title: this.editingTarget.title,
+                        content: this.editingTarget.content,
+                        group: 1
+                    }
+                }).then((response) => {
+                    if (response.data.success === false) {
+                        alert('添加失败')
+                    } else {
+                        this.getPoems()
+                        this.isEditing = false
+                    }
+                })
+            } else {
+                this.$http({
+                    url: '/api/poem/' + this.editingTarget.id,
+                    method: 'patch',
+                    params: {
+                        title: this.editingTarget.title,
+                        content: this.editingTarget.content,
+                        group: 1
+                    }
+                }).then((response) => {
+                    if (response.data.success === false) {
+                        alert('提交失败')
+                    } else {
+                        this.getPoems()
+                        this.isEditing = false
+                    }
+                })
+            }
+        },
         getPoems: function () {
             this.$http.get('/api/poem', {
                 pn: '1',
-                pp: this.totalNum
+                pp: this.totalNumedtingTarget
             }).then(response => {
                 this.poems = response.data.data
             }).catch(e => {
@@ -325,6 +390,47 @@ export default {
                     border: none;
                     cursor: pointer;
                 }
+            }
+        }
+    }
+    .fore_back1{
+        background:rgba(255, 255, 255, 0.3);
+        text-align:  center;
+        max-height: 100%;
+        .edit_content{
+            z-index: 9999;
+            position: fixed;
+            display: inline-block;
+            width: 80%;
+            text-align: center;
+            height: 40rem;
+            top: 0;
+            background: #777;
+            padding: 4rem 10% 8rem 10%;
+            margin-left: -50%; //margin-left = - (width + padding-left + padding-right) / 2
+            //border-radius: 1rem;
+            margin-top: 5rem;
+            textarea,input{
+                border: none;
+                padding: 0.6rem;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 1.11rem;
+            }
+            textarea,input:focus{outline: none;}
+            textarea{
+                resize: none;
+                margin-top: 5rem;
+                height: 32rem;
+                width: 100%;
+                font-size: 1.11rem;
+                padding: 1rem;
+                font-family: Arial, Helvetica, sans-serif;
+                line-height: 2rem;
+            }
+            button{
+                padding: 0 1rem 0 1rem;
+                margin-left: 0.6rem;
+                margin-right: 0.6rem;
             }
         }
     }

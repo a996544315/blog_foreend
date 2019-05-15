@@ -5,9 +5,20 @@
                 <p><a class="web_name" :href="friend.url" target="view_window"><u>{{friend.webName}}</u></a></p>
                 <p>
                     <a class="friend_name">{{friend.name}}</a>&emsp;&emsp;&emsp;
-                    <a class="tag" v-for="(t,index) in friend.tag.split(',')">{{t}}</a>
+                    <a class="tag" v-for="(t,index) in friend.tag==null?[]:friend.tag.split(',')">{{t}}</a>
+                    <button v-if="$store.state.isAdmin" @click="toEdit(friend)">EDIT</button>
+                    <button v-if="$store.state.isAdmin">DELETE</button>
                 </p>
             </div>
+        </div>
+        <button v-if="$store.state.isAdmin" @click="isEditing=true;target={}">ADD</button>
+        <div class="friend_foreback" v-if="isEditing">
+            <input v-model="target.webName" placeholder="web name"/>
+            <input v-model="target.url" placeholder="url"/>
+            <input v-model="target.name" placeholder="名字简写，长度＝１"/>
+            <input v-model="target.tag" placeholder="标签，英文逗号分隔"/>
+            <button @click="submit()">SUBMIT</button>
+            <button @click="isEditing=false">CANCEL</button>
         </div>
     </div>
 </template>
@@ -16,15 +27,44 @@
 export default {
     data () {
         return {
-            friends: []
+            isEditing: false,
+            friends: [],
+            target: {}
         }
     },
     created () {
-        this.$http.get('/api/friend')
+        this.getFriends()
+    },
+    methods: {
+        getFriends: function () {
+            this.$http.get('/api/friend')
             .then(response => {
                 this.friends = response.data.data
-                console.log(this.friends)
             }).catch(e => {})
+        },
+        toEdit: function (friend) {
+            this.isEditing = true
+            this.target.id = friend.id
+            this.target.url = friend.url
+            this.target.webName = friend.webName
+            this.target.name = friend.name
+            this.target.tag = friend.tag
+        },
+        submit: function () {
+            let addOrEdit = this.target.id === null || this.target.id === undefined || this.target.id === ''
+            this.$http({
+                url: '/api/friend' + (addOrEdit ? '' : '/' + this.target.id),
+                method: addOrEdit ? 'post' : 'patch',
+                params: this.target
+            }).then((response) => {
+                if (response.data.success === false) {
+                    alert('添加失败')
+                } else {
+                    this.getFriends()
+                    this.isEditing = false
+                }
+            })
+        }
     }
 }
 </script>
