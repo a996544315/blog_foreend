@@ -251,7 +251,7 @@ export default {
                 border-radius: 0.2rem;
             }
             .comment_list_content{
-                margin: 0.7rem 0 0 0 line-height: 2.5rem;
+                margin: 0.7rem 0 0 0
             }
         }
     }
