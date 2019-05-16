@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div v-show="!isEditing">
+        <div v-show="!articleEditing">
             <section class="newBlog">
                 <div class="posts animated fadeIn">
                     <div class="flex">
@@ -8,34 +8,34 @@
                             <div class="option">
                                 <time>{{article.createDate | toDate}}</time>
                                 <a>{{article.title}}</a>
-                                <button v-show="$store.state.isAdmin" @click="edtingTarget.id=article.id;edtingTarget.title=article.title;edtingTarget.content=article.content;isEditing=true;">编辑</button>
+                                <button v-show="$store.state.isAdmin" @click="editingArticleTarget.id=article.id;editingArticleTarget.title=article.title;editingArticleTarget.content=article.content;articleEditing=true;">编辑</button>
                                 <button v-show="$store.state.isAdmin" @click="deleteArticle(article.id)">删除</button>
-                                <button v-show="$store.state.isAdmin" @click="edtingTarget.id=null;edtingTarget.title='';edtingTarget.content='';isEditing=true;">新增</button>
+                                <button v-show="$store.state.isAdmin" @click="editingArticleTarget.id=null;editingArticleTarget.title='';editingArticleTarget.content='';articleEditing=true;">新增</button>
                             </div>
                             <p class="content">{{'&emsp;&emsp;'+article.content.substring(0,article.content.substring(0,600).lastIndexOf('\n')).replace(/\n/g,'\n&emsp;&emsp;')}}<br/>&emsp;&emsp;......</p>
                             <router-link :to="{name: 'article', query: {id: article.id}}" tag="button" exact>
                                 <span>Read More</span>
                             </router-link> 
                         </div>
-                        <button v-show="$store.state.isAdmin&&reducedArticles.length==0" @click="edtingTarget.id=null;edtingTarget.title='';edtingTarget.content='';isEditing=true;">新增</button>
+                        <button v-show="$store.state.isAdmin&&reducedArticles.length==0" @click="editingArticleTarget.id=null;editingArticleTarget.title='';editingArticleTarget.content='';articleEditing=true;">新增</button>
                     </div>
                 </div>
             </section>
             <!-- <div class="more_div"><p  id="more" @click="more()">---M O R E---</p></div> -->
         </div>
         <!-- 浮动编辑栏 -->
-        <div class="fore_back" v-if="isEditing" >
+        <div class="fore_back" v-if="articleEditing" >
             <div class="edit_content">
                 <div style="">
-                    <input v-model="edtingTarget.title"/>
+                    <input v-model="editingArticleTarget.title"/>
                 </div>
                 <div>
-                    <textarea v-model="edtingTarget.content"/>
+                    <textarea v-model="editingArticleTarget.content"/>
                 </div>
                 <div>
                     <button @click="submitArticle()">SUBMIT</button>
-                    <button @click="edtingTarget.title=undefined;edtingTarget.content=undefined">CLEAR</button>
-                    <button @click="isEditing=false;">CANCEL</button>
+                    <button @click="editingArticleTarget.title=undefined;editingArticleTarget.content=undefined">CLEAR</button>
+                    <button @click="articleEditing=false;">CANCEL</button>
                 </div>
             </div>
         </div>
@@ -52,8 +52,8 @@ export default {
             toDay: new Date(),
             numPerPage: 5,
             totalNum: -1,
-            isEditing: false,
-            edtingTarget: {
+            articleEditing: false,
+            editingArticleTarget: {
                 id: undefined,
                 title: undefined,
                 content: undefined
@@ -88,13 +88,13 @@ export default {
             this.$http.delete('/api/article/' + id).then(r => this.getArticles())
         },
         submitArticle: function () {
-            if (this.edtingTarget.id === null || this.edtingTarget.id === undefined || this.edtingTarget.id === '') {
+            if (this.editingArticleTarget.id === null || this.editingArticleTarget.id === undefined || this.editingArticleTarget.id === '') {
                 this.$http({
                     url: '/api/article/',
                     method: 'post',
                     params: {
-                        title: this.edtingTarget.title,
-                        content: this.edtingTarget.content,
+                        title: this.editingArticleTarget.title,
+                        content: this.editingArticleTarget.content,
                         group: 1
                     }
                 }).then((response) => {
@@ -102,16 +102,16 @@ export default {
                         alert('添加失败')
                     } else {
                         this.getArticles()
-                        this.isEditing = false
+                        this.articleEditing = false
                     }
                 })
             } else {
                 this.$http({
-                    url: '/api/article/' + this.edtingTarget.id,
+                    url: '/api/article/' + this.editingArticleTarget.id,
                     method: 'patch',
                     params: {
-                        title: this.edtingTarget.title,
-                        content: this.edtingTarget.content,
+                        title: this.editingArticleTarget.title,
+                        content: this.editingArticleTarget.content,
                         group: 1
                     }
                 }).then((response) => {
@@ -119,7 +119,7 @@ export default {
                         alert('提交失败')
                     } else {
                         this.getArticles()
-                        this.isEditing = false
+                        this.articleEditing = false
                     }
                 })
             }
