@@ -33,7 +33,6 @@ export default {
     methods: {
         search () {
             let cmd = this.text
-            alert('cmd')
             if (cmd.indexOf('ad ') === 0) {
                 this.$http.get('/api/command/admin', {
                     params: {
@@ -45,7 +44,6 @@ export default {
                     console.log(e)
                 })
             } else if (cmd === 'exit') {
-                alert(cmd)
                 store.state.isAdmin = false
             }
             this.text = ''

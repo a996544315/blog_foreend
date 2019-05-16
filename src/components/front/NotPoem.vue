@@ -12,13 +12,13 @@
                             <p class="content">{{poem.content}}<br/></p>
                             </br>
                             <button @click="showComment = false;getComment(poem)">REPLY</button>
-                            <!-- <img class='commentIcon' src="/static/comment.png" @click="showComment = false;getComment(poem)"></img> -->
                             <br>
                             <button v-if="$store.state.isAdmin" @click="editingTarget.id=poem.id;editingTarget.title=poem.title;editingTarget.content=poem.content;isEditing=true">EDIT</button>
                             <button v-if="$store.state.isAdmin" @click="editingTarget.id=null;editingTarget.title=null;editingTarget.content=null;isEditing=true">ADD</button>
                             <br>
-                            <button v-if="$store.state.isAdmin" @click="isEditing=true">DELETE</button>
+                            <button v-if="$store.state.isAdmin" @click="deletePoem(poem.id)">DELETE</button>
                         </div>
+                        <button v-if="$store.state.isAdmin&&poems.length==0" @click="editingTarget.id=null;editingTarget.title=null;editingTarget.content=null;isEditing=true">ADD</button>
                     </div>
                 </div>
             </section>
@@ -38,12 +38,12 @@
                         </div>
                         <p class="comment_user_info">
                             昵称&emsp;<input class="tag_info" @keyup.enter="submitComment()" v-model="reply.user"/>&emsp;&emsp;
-                            邮箱&emsp;<input class="titleag_info" @keyup.enter="submitComment()" v-model="reply.email"/>&emsp;&emsp;
-                            <button class="submit" @titlelick="submitComment()">提交</button>
+                            邮箱&emsp;<input class="tag_info" @keyup.enter="submitComment()" v-model="reply.email"/>&emsp;&emsp;
+                            <button class="submit" @click="submitComment()">提交</button>
                         </p>
                     </div>
                     <div class="comment_list">
-                        <div class="poem_comment" v-titleor="(comment, index) in comments">
+                        <div class="poem_comment" v-for="(comment, index) in comments">
                             <p>
                                 <a class="comment_date">{{ comment.createDate | to_date }}</a>&emsp;
                                 <a class="comment_user">{{ comment.user }} : </a>&emsp;&emsp;
@@ -82,11 +82,7 @@ export default {
     data () {
         return {
             isEditing: false,
-            editingTarget: {
-                id: undefined,
-                title: undefined,
-                content: undefined
-            },
+            editingTarget: {},
             poems: [],
             toDay: new Date(),
             numPerPage: 10,
@@ -222,6 +218,21 @@ export default {
                 this.getComment(this.toComment)
                 this.reply.content = ''
                 this.cancelReply()
+            }).catch(e => {
+                console.log(e)
+            })
+        },
+        deletePoem: function (id) {
+            this.$http({
+                url: 'api/poem/' + id,
+                params: {},
+                method: 'delete'
+            }).then(response => {
+                if (response.data.success === false) {
+                    alert('删除失败')
+                } else {
+                    this.getPoems()
+                }
             }).catch(e => {
                 console.log(e)
             })
