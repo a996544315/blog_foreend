@@ -17,7 +17,7 @@
                                 <span>Read More</span>
                             </router-link> 
                         </div>
-                        <button v-show="$store.state.isAdmin&&reducedArticles.length==0" @click="editingArticleTarget.id=null;editingArticleTarget.title='';editingArticleTarget.content='';articleEditing=true;">新增</button>
+                        <button v-show="$store.state.isAdmin&&(reducedArticles==null||reducedArticles.length==0)" @click="editingArticleTarget.id=null;editingArticleTarget.title='';editingArticleTarget.content='';articleEditing=true;">新增</button>
                     </div>
                 </div>
             </section>
