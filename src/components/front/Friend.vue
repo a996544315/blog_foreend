@@ -7,7 +7,7 @@
                     <a class="friend_name">{{friend.name}}</a>&emsp;&emsp;&emsp;
                     <a class="tag" v-for="(t,index) in friend.tag==null?[]:friend.tag.split(',')">{{t}}</a>
                     <button v-if="$store.state.isAdmin" @click="toEdit(friend)">EDIT</button>
-                    <button v-if="$store.state.isAdmin">DELETE</button>
+                    <button v-if="$store.state.isAdmin" @click="deleteLink(friend.id)">DELETE</button>
                 </p>
             </div>
         </div>
@@ -62,6 +62,18 @@ export default {
                 } else {
                     this.getFriends()
                     this.isEditing = false
+                }
+            })
+        },
+        deleteLink: function (id) {
+            this.$http({
+                url: '/api/friend/' + id,
+                method: 'delete'
+            }).then((response) => {
+                if (response.data.success === false) {
+                    alert('删除失败')
+                } else {
+                    this.getFriends()
                 }
             })
         }
