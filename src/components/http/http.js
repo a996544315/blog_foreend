@@ -45,6 +45,9 @@ axios.interceptors.request.use(
 // http response 拦截器
 axios.interceptors.response.use(
     response => {
+        if (response.data.success === 'false') {
+            alert(response.data.msg)
+        }
         if (response.data.resultCode === '404') {
             console.log('response.data.resultCode是404')
             // 返回 错误代码-1 清除ticket信息并跳转到登录页面

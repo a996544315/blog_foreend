@@ -45,6 +45,8 @@ export default {
                 })
             } else if (cmd === 'exit') {
                 store.state.isAdmin = false
+            } else if (store.state.isAdmin && cmd === 'visit') {
+                this.$router.push({path: '/visit'})
             }
             this.text = ''
         }

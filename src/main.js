@@ -38,6 +38,12 @@ Vue.filter('toTag', (arr) => {
     }
 })
 
+Vue.filter('dateAgo', (num) => {
+    const curDate = new Date()
+    const ago = new Date(curDate.getTime() - num * 24 * 60 * 60 * 1000)
+    return (ago.getMonth() + 1) + '/' + ago.getDate()
+})
+
 Vue.http.interceptors.push((request, next) => {
     if (window.localStorage.getItem('token')) {
         request.headers.set('authorization', 'Bearer ' + window.localStorage.getItem('token'))
