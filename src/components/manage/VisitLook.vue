@@ -4,13 +4,24 @@
         <div v-for="(num,index) in visitNum" >
             {{ index | dateAgo}}: {{num}}
         </div>
+        <div class="comment_list">
+            <table style="align:center" v-for="(comment,index) in comments">
+                <tr>
+                    <th>{{comment.createDate | toDay}}</th>
+                    <th>{{comment.targetUrl}}</th>
+                    <th>{{comment.user}}</th>
+                    <th>{{comment.content}}</th>
+                </tr>
+            </table>
+        </div>
     </div>
 </template>
 <script>
 export default {
     data () {
         return {
-            visitNum: []
+            visitNum: [],
+            comments: []
         }
     },
     methods: {
@@ -19,10 +30,17 @@ export default {
             .then(response => {
                 this.visitNum = response.data.data
             })
+        },
+        getComments: function () {
+            this.$http.get('/api/comment/latest')
+            .then(response => {
+                this.comments = response.data.data
+            })
         }
     },
     created () {
         this.getVisitNum()
+        this.getComments()
     }
 }
 </script>

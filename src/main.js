@@ -32,6 +32,12 @@ Vue.filter('to_date', (date) => {
     }
 })
 
+Vue.filter('toDay', (date) => {
+    const d = new Date(date)
+    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' +
+        d.getDate()
+})
+
 Vue.filter('toTag', (arr) => {
     if (arr) {
         return arr.join('，')
