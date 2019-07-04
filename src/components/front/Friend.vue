@@ -13,10 +13,13 @@
         </div>
         <button v-if="$store.state.isAdmin" @click="isEditing=true;target={}">ADD</button>
         <div class="friend_foreback" v-if="isEditing">
-            <input v-model="target.webName" placeholder="web name"/>
-            <input v-model="target.url" placeholder="url"/>
-            <input v-model="target.name" placeholder="名字简写，长度＝１"/>
-            <input v-model="target.tag" placeholder="标签，英文逗号分隔"/>
+            </br>
+            －－－－－－－－－－－－－－－－－－－－－－－－－－－</br>
+            网站名&emsp;<input v-model="target.webName" placeholder="web name"/></br>
+            地&emsp;址&emsp;<input v-model="target.url" placeholder="url"/></br>
+            简&emsp;称&emsp;<input v-model="target.name" placeholder="名字简写，长度＝１"/></br>
+            标&emsp;签&emsp;<input v-model="target.tag" placeholder="标签，英文逗号分隔"/></br>
+            优先级&emsp;<input v-model="target.stage" placeholder="优先级，越小越靠前"/></br>
             <button @click="submit()">SUBMIT</button>
             <button @click="isEditing=false">CANCEL</button>
         </div>
@@ -49,6 +52,7 @@ export default {
             this.target.webName = friend.webName
             this.target.name = friend.name
             this.target.tag = friend.tag
+            this.target.stage = friend.stage
         },
         submit: function () {
             let addOrEdit = this.target.id === null || this.target.id === undefined || this.target.id === ''
@@ -86,17 +90,17 @@ export default {
     position: relative;
     width: 50%;
     margin-top: 10rem;
-    margin-left: 35%;
+    margin-left: 40%;
     .friend{
         top: 10px;
         div{
-            margin-top: 5rem;
+            margin-top: 4rem;
             a{
                 font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-                font-size: 1.5rem;
+                font-size: 1rem;
             }
             .web_name{
-                font-size: 3rem;
+                font-size: 1.8rem;
                 color: #222;
             }
             .friend_name{
@@ -115,6 +119,12 @@ export default {
                 margin-right: 1rem;
                 line-height: 3rem;
             }           
+        }
+    }
+    .friend_foreback{
+        width: 100%;
+        #input{
+            width: 100%
         }
     }
 }
