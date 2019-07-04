@@ -2,19 +2,19 @@
     <div id="nav">
         <div class="flexDiv">
             <div class="search">
-                <input type="text" v-model="text" placeholder="GATE OF HEAVEN" @keydown.enter="search">
+                <input type="text" v-model="text" placeholder="GATE OF MY HEART" @keydown.enter="search">
                 <i class="iconfont icon-search" @click="search"></i>
             </div>
             <nav>
                 <ul class="catalog">
                     <router-link to="/nothing" tag="li">NOTHING</router-link>
                     <router-link to="/notpoem" tag="li">NOTPOEM</router-link>
-                    <router-link to="/friend" tag="li">FRIENDS</router-link>
+                    <router-link to="/friend" tag="li">HEAVENS</router-link>
                     <!-- <router-link to="/about" tag="li">ABOUTME</router-link> -->
                 </ul>
             </nav>
             <div>
-                <a class="iconfont icon-github" target="view_window" href="https://github.com/a996544315"></a>
+                <a class="iconfont icon-github" target="view_window" href="https://github.com/sheepzh"></a>
             </div>
         </div>
     </div>
