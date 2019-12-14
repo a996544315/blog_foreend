@@ -26,7 +26,7 @@ export default {
     },
     methods: {
         getVisitNum: function () {
-            this.$http.get('/api/visitor/quantity/date/10')
+            this.$http.get('/api/visitor/quantity/day/10')
             .then(response => {
                 this.visitNum = response.data.data
             })
